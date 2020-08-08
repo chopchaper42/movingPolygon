@@ -6,28 +6,24 @@ let polygon = {
         y: 100,
         rX: 0,
         rY: 0,
-        name: 'leftUp',
     },
     leftBottom: {
         x: 100,
         y: 500,
         rX: 0,
         rY: 0,
-        name: 'leftBottom',
     },
     rightUp: {
         x: 500,
         y: 100,
         rX: 0,
         rY: 0,
-        name: 'rightUp',
     },
     rightBottom: {
         x: 500,
         y: 500,
         rX: 0,
         rY: 0,
-        name: 'rightBottom',
     },
 };
 
@@ -55,22 +51,16 @@ ctx.lineTo(LUp.x, LUp.y);
 ctx.closePath();
 ctx.stroke();
 
-// setTimeout(start, 3000);
-// start();
-// start();
+start();
 
-goStart();
-
-function getRandomCoordinate(obj) { // obj is an angle of polygon
+function getRandomCoordinate(obj) {
     obj.rX = Math.floor(Math.random() * 1260);
     obj.rY = Math.floor(Math.random() * 700);
-    console.log(obj);
 }
 
-function movePoint(obj) { // obj is an angle of polygon
+function movePoint(obj) {
     let dX = obj.rX - obj.x;
     let dY = obj.rY - obj.y;
-    let dRatio = (dX > dY) ? (dX / dY) : (dY / dX);
     const xPerInterval = dX / intervalRatio;
     const yPerInterval = dY / intervalRatio;
 
@@ -84,10 +74,6 @@ function movePoint(obj) { // obj is an angle of polygon
             obj.y += yPerInterval;
             count += 0.25;
         }
-
-        console.log(obj.name + ' X: ' + obj.x);
-        console.log(obj.name + ' Y: ' + obj.y);
-        console.log('Count: ' + count);
 
         redrawPolygon();
 
@@ -112,8 +98,4 @@ function start() {
         getRandomCoordinate(polygon[polygonKey]);
         movePoint(polygon[polygonKey]);
     }
-}
-
-function goStart() {
-    start();
 }
