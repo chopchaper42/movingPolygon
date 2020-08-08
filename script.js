@@ -33,6 +33,7 @@ const RUp = polygon.rightUp;
 const RBot = polygon.rightBottom;
 
 const doButton = document.querySelector('.change-form-button');
+const stopButton = document.querySelector('.stop-button');
 const canvas = document.querySelector('.canvas');
 const ctx = canvas.getContext('2d');
 
@@ -42,8 +43,13 @@ const intervalRatio = executingTime / oneInterval;
 
 let intervalID;
 let count = 1;
+let keepTransforming = true;
 
 doButton.addEventListener('click', start);
+stopButton.addEventListener('click', () => {
+    keepTransforming = false;
+    clearInterval(intervalID);
+});
 
 function getRandomCoordinate(obj) {
     obj.rX = Math.floor(Math.random() * 1260);
@@ -57,6 +63,8 @@ function movePoint(obj) {
     const yPerInterval = dY / intervalRatio;
 
     let int = setInterval(() => {
+
+        if (!keepTransforming) return;
 
         if (count === intervalRatio) {
             obj.x = Math.round(obj.x);
@@ -89,6 +97,7 @@ function redrawPolygon() {
 }
 
 function start() {
+    keepTransforming = true;
     if (intervalID) clearInterval(intervalID);
     ignite();
     intervalID = setInterval(() => {
