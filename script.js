@@ -32,6 +32,7 @@ const LBot = polygon.leftBottom;
 const RUp = polygon.rightUp;
 const RBot = polygon.rightBottom;
 
+const doButton = document.querySelector('.change-form-button');
 const canvas = document.querySelector('.canvas');
 const ctx = canvas.getContext('2d');
 
@@ -39,19 +40,10 @@ const executingTime = 5000;
 const oneInterval = 50;
 const intervalRatio = executingTime / oneInterval;
 
-let int;
+let intervalID;
 let count = 1;
 
-ctx.beginPath();
-ctx.moveTo(LUp.x, LUp.y);
-ctx.lineTo(LBot.x, LBot.y);
-ctx.lineTo(RBot.x, RBot.y);
-ctx.lineTo(RUp.x, RUp.y);
-ctx.lineTo(LUp.x, LUp.y);
-ctx.closePath();
-ctx.stroke();
-
-start();
+doButton.addEventListener('click', start);
 
 function getRandomCoordinate(obj) {
     obj.rX = Math.floor(Math.random() * 1260);
@@ -67,6 +59,10 @@ function movePoint(obj) {
     let int = setInterval(() => {
 
         if (count === intervalRatio) {
+            obj.x = Math.round(obj.x);
+            obj.y = Math.round(obj.y);
+            console.log(obj.x);
+            console.log(obj.y);
             clearInterval(int);
 
         } else {
@@ -93,8 +89,20 @@ function redrawPolygon() {
 }
 
 function start() {
+    if (intervalID) clearInterval(intervalID);
+    ignite();
+    intervalID = setInterval(() => {
+        count = 1;
+        for (let polygonKey in polygon) {
+            getRandomCoordinate(polygon[polygonKey]);
+            movePoint(polygon[polygonKey]);
+        }
+    }, executingTime + 30);
+}
+
+function ignite() {
+    count = 1;
     for (let polygonKey in polygon) {
-        console.log('Call functions for ' + polygonKey);
         getRandomCoordinate(polygon[polygonKey]);
         movePoint(polygon[polygonKey]);
     }
